@@ -337,7 +337,7 @@ int main()
                       std::cout << std::endl;
                       garis2(37);
 
-                      std::cout << "Pilih : "
+                      std::cout << "Pilih : ";
                       std::cin >> pilihUpdate;
       
                       switch (pilihUpdate)
