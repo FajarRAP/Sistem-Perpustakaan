@@ -4,6 +4,9 @@
 #include "class/array1d.hpp"
 #include "class/buku.hpp"
 #include "class/database.hpp"
+#include "fort.h"
+#include "fortb.h"
+#include "fort.hpp"
 #include "class/sistem.hpp"
 #include "class/user.hpp"
 #include "class/DoublyLinkedList.hpp"
@@ -660,6 +663,8 @@ Array1D<T> Array1D<T>::operator%=(const Array1D<T> &obj)
 //overloading <<
 std::ostream &operator<<(std::ostream &out, Buku &obj)
 {
+  // fort::char_table table;
+  // table << fort::header << obj.getJudul() << obj.getPenulis() << obj.getTahunTerbit() << obj.getStok() << fort::endr;
   out<<std::left<<std::setw(50)<<obj.getJudul();
   out<<std::setw(33)<<obj.getPenulis();
   out<<std::setw(6)<<obj.getTahunTerbit();
@@ -1271,22 +1276,32 @@ void DoublyLinkedList<T>::cetakMaju()
 {
   if(!isKosong())
   {
-    int a = 0;
     Node<T> *jalan = this->kepala;
+    int a = 0;
+    fort::char_table table;
+    table.set_border_style(FT_NICE_STYLE);
+    table << fort::header << "No" << "Judul Buku" << "Penulis Buku" << "Tahun Terbit" << "Stok Tersedia"<<fort::endr;
     while(jalan != 0)
     {
       if(a+1 < 10)
       {
-        std::cout<<std::left<<a + 1<<std::setw(4)<<".";
+        table << a +1;
       }
       else if(a+1 >= 10 && a+1 < 100)
       {      
-        std::cout<<std::left<<a + 1<<std::setw(3)<<".";
+        table << a +1;
       }
-      std::cout<<jalan->data<<std::endl;
+      table<<jalan->data.getJudul();
+      table<<jalan->data.getPenulis();
+      table<<jalan->data.getTahunTerbit();
+      table<<jalan->data.getStok();
+      table << fort::endr;
       a++;
       jalan = jalan->berikut;
     }
+    table.column(3).set_cell_text_align(fort::text_align::center);
+    table.column(4).set_cell_text_align(fort::text_align::center);
+    std::cout<<table.to_string() << std::endl;
     return;
   }
   std::cout<<"List Kosong"<<std::endl;
@@ -1446,19 +1461,29 @@ void SinglyLinkedList<T>::display()
   {
     Node<T> *jalan = this->kepala;
     int a = 0;
+    fort::char_table table;
+    table.set_border_style(FT_NICE_STYLE);
+    table << fort::header << "No" << "Judul Buku" << "Penulis Buku" << "Tahun Terbit" << "Stok Tersedia"<<fort::endr;
     while(jalan != 0)
     {
       if(a+1 < 10)
       {
-        std::cout<<std::left<<a + 1<<std::setw(4)<<".";
+        table<<a + 1;
       }else if(a+1 >= 10 && a+1 < 100)
       {      
-        std::cout<<std::left<<a + 1<<std::setw(3)<<".";
+        table<<a + 1;
       }
-      std::cout<<jalan->data<<std::endl;
+      table<<jalan->data.getJudul();
+      table<<jalan->data.getPenulis();
+      table<<jalan->data.getTahunTerbit();
+      table<<jalan->data.getStok();
+      table << fort::endr;
       jalan = jalan->berikut;
       a++;
     }
+    table.column(3).set_cell_text_align(fort::text_align::center);
+    table.column(4).set_cell_text_align(fort::text_align::center);
+    std::cout<<table.to_string() << std::endl;
     return;
   }
   std::cout<<"List kosong"<<std::endl;
