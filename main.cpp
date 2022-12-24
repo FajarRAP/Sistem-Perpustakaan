@@ -35,6 +35,8 @@ int main()
   // Pertemuan 2 : Array Statis
   int angka[5];
   bool isMenuUtama;
+  time_t now = time(0);
+  tm *waktuSekarang = localtime(&now);
 
   // if(false){
   do 
@@ -116,7 +118,7 @@ int main()
               int tahunTerbit;
               short stok;
     
-              while (menuAdmin != '5') 
+              while (menuAdmin != '6') 
               {
                 // Menu Admin
                 system("clear");
@@ -131,7 +133,9 @@ int main()
                 garis2(37);
                 std::cout << "|>>   4. Lihat list buku          <<|" << std::endl;
                 garis2(37);
-                std::cout << "|>>   5. Ke luar                  <<|" << std::endl;
+                std::cout << "|>>   5. Cari Buku                <<|" << std::endl;
+                garis2(37);
+                std::cout << "|>>   6. Ke luar                  <<|" << std::endl;
                 garis(37);
                 std::cout << "Pilih : ";
     
@@ -198,7 +202,8 @@ int main()
                     // pesan
                     std::cout << "Buku Berhasil ditambah" << std::endl;
                     std::cout << std::endl;
-                    
+
+                    //hold a second
                     std::cout << "Input apa saja untuk melanjutkan... ";
                     std::cin >> isPause;
                     break;
@@ -1157,9 +1162,41 @@ int main()
                     std::cin >> isPause;
                     break;
                   }
-      
-                  // Ke luar dari menu admin
+
+                  //pilih cari buku
                   case '5':
+                  {
+                    system("clear");
+                    std::string cari;
+                    std::vector<bukuTemp> bacaBuku;
+                    std::fstream data;
+                    bukuTemp buffer;
+                    bacaBuku.clear();
+                    data.open("Buku.txt");
+                    while (std::getline(data, buffer.judul, ';') &&
+                           std::getline(data, buffer.penulis, ';') &&
+                           data >> buffer.tahunTerbit >> buffer.stok)
+                    {
+                      bacaBuku.push_back(buffer);
+                    }                    
+                    data.close();
+
+                    std::cout << "Cari Buku : ";
+                    std::cin>>cari;
+
+                    for(int a = 0; a < bacaBuku.size(); a++){
+                      if(bacaBuku.at(a).judul.find(cari) != std::string::npos || bacaBuku.at(a).penulis.find(cari) != std::string::npos){
+                        std::cout<<bacaBuku.at(a).judul<<" "<<bacaBuku.at(a).penulis<<std::endl;
+                      }
+                    }
+                    
+                    //hold a second
+                    std::cout << "Input apa saja untuk melanjutkan... ";
+                    std::cin >> isPause;
+                    break;
+                  }
+                  // Ke luar dari menu admin
+                  case '6':
                   {
                     break;
                   }
@@ -1668,11 +1705,13 @@ int main()
                       std::cout << "Kembalikan tanggal : " << __DATE__;
                       std::cout << std::endl;
                       // isi invoice
-                      _157.invoice(buffer[3], 
-                                   buffer[10], 
-                                   buffer[1], 
-                                   __DATE__,
-                                   rand() % 100 + 1, invoice);
+                      _157.invoice2(waktuSekarang->tm_mday, 
+                                    1 + waktuSekarang->tm_mon, 
+                                    1900 + waktuSekarang->tm_year, 
+                                    buffer[3], 
+                                    buffer[10], 
+                                    buffer[1], 
+                                    invoice);
                     }
       
                     

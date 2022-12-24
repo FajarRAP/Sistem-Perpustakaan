@@ -78,3 +78,19 @@ Kota     : CIAMIS
 2. Sejarah Dunia yang Disembunyikan Jan  1 1980 
 3. Si Bungkuk dari Notre-Dame Jan  1 1980 
 *jika melewati batas/buku rusak, maka peminjam akan dikenakan denda!! 
+INVOICE
+												PERPUSTAKAAN
+																																Tanggal   : Jan  1 1980
+																																No. Order : 84
+
+
+Nama     : FAJAR RIANSYAH
+Alamat   : DUSUN SINGANDARU
+Kota     : CIAMIS
+============================================================================================================================
+|No		|  Deskripsi		|  Kuantitas		|  Tanggal Pinjam		|  Tanggal Harus Kembali
+============================================================================================================================
+1. De Liefde Jan  1 1980 
+2. Sejarah Dunia yang Disembunyikan Jan  1 1980 
+3. Si Bungkuk dari Notre-Dame Jan  1 1980 
+*jika melewati batas/buku rusak, maka peminjam akan dikenakan denda!! 

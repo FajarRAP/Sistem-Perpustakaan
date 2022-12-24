@@ -1,12 +1,14 @@
-#include "165.h"
-#include "behaviour.hpp"
-#include "class/SinglyLinkedList.hpp"
-#include "class/buku.hpp"
-#include "fort.hpp"
-#include "fortb.h"
-#include <fstream>
+// #include "165.h"
+// #include "behaviour.hpp"
+// #include "class/SinglyLinkedList.hpp"
+// #include "class/buku.hpp"
+// #include "class/fort.hpp"
+// #include "class/fortb.h"
+// #include <fstream>
+#include "157.h"
 #include <iostream>
 #include <vector>
+// #include <vector>
 
 void garis(int x) {
   if (x != 0) {
@@ -19,14 +21,15 @@ void garis(int x) {
 
 int main() {
   system("clear");
-  garis(37);
-  std::cout << "|>>        Menu Transaksi         <<|";
-  std::cout << std::endl;
-  garis(37);
-  std::cout << std::endl;
-  fort::char_table table;
-  // table << fort::header << "   !!! Konfirmasi Identitas !!!   ";
-  // table << fort::endr;
-  table << fort::header << "    !!! Transaksi Berhasil !!!    " << fort::endr;
-  std::cout << table.to_string() << std::endl;
+  
+  Dimas _157;
+  bukuTemp temp;
+  temp.judul = "Si Bungkuk dari Notre-Dame";
+  std::vector<bukuTemp> pektor;
+  pektor.push_back(temp);
+  temp.judul = "De Liefde";
+  pektor.push_back(temp);
+  temp.judul = "Sejarah Dunia yang Disembunyikan";
+  pektor.push_back(temp);
+  
 }
