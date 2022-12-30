@@ -1,4 +1,4 @@
-// #include "165.h"
+#include "165.h"
 // #include "behaviour.hpp"
 // #include "class/SinglyLinkedList.hpp"
 // #include "class/buku.hpp"
@@ -20,16 +20,5 @@ void garis(int x) {
 }
 
 int main() {
-  system("clear");
-  
-  Dimas _157;
-  bukuTemp temp;
-  temp.judul = "Si Bungkuk dari Notre-Dame";
-  std::vector<bukuTemp> pektor;
-  pektor.push_back(temp);
-  temp.judul = "De Liefde";
-  pektor.push_back(temp);
-  temp.judul = "Sejarah Dunia yang Disembunyikan";
-  pektor.push_back(temp);
   
 }
