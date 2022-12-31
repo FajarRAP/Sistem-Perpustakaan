@@ -109,7 +109,17 @@ public:
     table[4][0].set_cell_span(4);
     table[5][0].set_cell_span(4);
     table[6][0].set_cell_span(4);
-    table[11][0].set_cell_span(4);
+    switch(y.size()){
+      case 1:
+        table[9][0].set_cell_span(4);
+        break;
+      case 2:
+        table[10][0].set_cell_span(4);
+        break;
+      case 3:
+        table[11][0].set_cell_span(4);
+        break;
+    }
     data.open("Invoice.txt", std::ios::out);
     data << table.to_string() << std::endl;
     data.close();

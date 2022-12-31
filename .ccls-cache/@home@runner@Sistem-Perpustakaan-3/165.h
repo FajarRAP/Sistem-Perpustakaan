@@ -1,6 +1,7 @@
 #ifndef __Fajar
 #define __Fajar
-#include<iostream>
+#include <iostream>
+#include "class/fort.hpp"
 
 // Pertemuan 1 : struct
 struct bukuTemp 
@@ -9,6 +10,12 @@ struct bukuTemp
   std::string penulis;
   int tahunTerbit;
   short stok;
+};
+
+class Antrian{
+public:
+  std::string noAntrian;
+  std::string id;
 };
 
 //ketentuan judul naik

@@ -5,6 +5,7 @@
 #include "class/DoublyLinkedList.hpp"
 #include "class/SinglyLinkedList.hpp"
 #include "class/StackArrayDinamis.hpp"
+#include "class/QueueDLL.h"
 #include "class/admin.hpp"
 #include "class/array1d.hpp"
 #include "class/buku.hpp"
@@ -27,9 +28,9 @@ void garis2(int);
 
 int main() {
   // Pertemuan 3 : Array Dinamis
+  std::vector<Buku> tempBuku;
   Array1D<Buku> arrBuku(0);
   StackArrayDinamis<Buku> stackBuku(3);
-  std::vector<Buku> tempBuku;
   char menuUtama;
   // Pertemuan 2 : Array Statis
   int angka[5];
@@ -43,6 +44,8 @@ int main() {
   // if(false){
   do {
     // Menu Utama
+    isMenuAdmin = true;
+    isMenuUser = true;
     system("clear");
     garis(37);
     std::cout << "|>> Perpustakaan Empud Solehudin  <<|" << std::endl;
@@ -104,7 +107,7 @@ int main() {
         // Cek apakah username (NIK) dan password (Register) sesuai
         if (isLogin == true && password == bufferPassword) {
           // variabel yang dibutuhkan
-          char menuAdmin;
+          short menuAdmin;
           Database database;
           Buku data;
           std::string judul;
@@ -134,7 +137,9 @@ int main() {
             garis2(37);
             std::cout << "|>>   8. Lihat Daftar User        <<|" << std::endl;
             garis2(37);
-            std::cout << "|>>   9. Ke luar                  <<|" << std::endl;
+            std::cout << "|>>   9. Konfirmasi Transaksi     <<|" << std::endl;
+            garis2(37);
+            std::cout << "|>>  10. Ke luar                  <<|" << std::endl;
             garis(37);
             std::cout << "Pilih : ";
 
@@ -142,7 +147,7 @@ int main() {
 
             switch (menuAdmin) {
               // Pilih tambah buku
-              case '1': {
+              case 1: {
                 //bersihkan layar
                 system("clear");
                 
@@ -208,7 +213,7 @@ int main() {
               }
   
               // Pilih hapus buku
-              case '2': {
+              case 2: {
                 //bersihkan layar
                 system("clear");
                 
@@ -279,7 +284,7 @@ int main() {
               }
   
               // pilih update buku
-              case '3': {
+              case 3: {
                 //bersihkan layar
                 system("clear");
                 
@@ -409,7 +414,7 @@ int main() {
               }
   
               // pilih tampilkan buku
-              case '4': {
+              case 4: {
                 //bersihkan layar
                 system("clear");
   
@@ -584,7 +589,7 @@ int main() {
               }
   
               // pilih cari buku
-              case '5': {
+              case 5: {
                 //bersihkan layar
                 system("clear");
   
@@ -651,7 +656,7 @@ int main() {
               }
   
               // pilih sortir buku
-              case '6': {
+              case 6: {
                 //bersihkan layar
                 system("clear");
 
@@ -1160,7 +1165,7 @@ int main() {
               }
   
               //pilih lihat semua admin
-              case '7': {
+              case 7: {
                 //bersihkan layar
                 system("clear");
 
@@ -1207,7 +1212,7 @@ int main() {
               }
               
               //pilih lihat semua user
-              case '8': {
+              case 8: {
                 //bersihkan tampilan
                 system("clear");
 
@@ -1252,9 +1257,70 @@ int main() {
                 std::cin >> isPause;
                 break;
               }
-              
+
+              case 9: {
+                //bersihkan layar
+                system("clear");
+
+                //variabel yang dibutuhkan
+                std::vector<Antrian> konfirmasiAntrian;
+                std::fstream data;
+                Antrian temp;
+                QueueDLL<Antrian> queue;
+                short no;
+
+                //header
+                garis(37);
+                std::cout << "|>>   Menu Konfirmasi Transaksi   <<|" << std::endl;
+                garis(37);
+
+                //baca antrian
+                data.open("Transaksi/noAntrian.txt", std::ios::in);
+                while(std::getline(data, temp.noAntrian, ';') &&
+                      std::getline(data, temp.id, ';'))
+                {
+                  queue.enqueue(temp);
+                  konfirmasiAntrian.push_back(temp);
+                  
+                }
+                data.close();
+
+                queue.display();
+
+                std::cout << "Acc antrian no : ";
+                std::cin >> no;
+
+                for(int a = 0; a < konfirmasiAntrian.size(); a++){
+                  if(no == stoi(konfirmasiAntrian.at(a).noAntrian)){
+                    data.open("Transaksi/" + konfirmasiAntrian.at(a).id + "_status.txt",
+                              std::ios::out);
+                    data << "1";
+                    data.close();
+                    konfirmasiAntrian.erase(konfirmasiAntrian.begin() + a);
+                  }
+                }
+                
+                if(konfirmasiAntrian.size() != 0){
+                std::cout<<"Masih aman 3" <<std::endl;
+                  data.open("Transaksi/noAntrian.txt", std::ios::out);
+                  for(int a = 0; a < konfirmasiAntrian.size(); a++){
+                    data << konfirmasiAntrian.at(a).noAntrian << " ";
+                    data << konfirmasiAntrian.at(a).id<<";";
+                  }
+                  data.close();
+                }else{
+                  data.open("Transaksi/noAntrian.txt", std::ios::out);
+                  data << "";
+                  data.close();
+                }
+
+                // hold a second
+                std::cout << "Input apa saja untuk melanjutkan... ";
+                std::cin >> isPause;
+                break;
+              }
               // Ke luar dari menu admin
-              case '9': {
+              case 10: {
                 isMenuAdmin = false;
                 break;
               }
@@ -1300,7 +1366,7 @@ int main() {
 
             // variabel yang dibutuhkan
             std::vector<bukuTemp> keranjang;
-
+            
             // input user memilih menu User
             garis(37);
             std::cout << "|>>       Masuk sebagai User      <<|";
@@ -1325,7 +1391,13 @@ int main() {
             std::cout << "|>>    5. Transaksi               <<|";
             std::cout << std::endl;
             garis2(37);
-            std::cout << "|>>    6. Ke luar                 <<|";
+            std::cout << "|>>    6. Cek Status              <<|";
+            std::cout << std::endl;
+            garis2(37);
+            std::cout << "|>>    7. Cetak Invoice           <<|";
+            std::cout << std::endl;
+            garis2(37);
+            std::cout << "|>>    8. Ke luar                 <<|";
             std::cout << std::endl;
             garis(37);
             std::cout << "Pilih : ";
@@ -1512,7 +1584,7 @@ int main() {
   
                 default: {
                 std::cout << "Pilihan tidak tersedia" << std::endl;
-              }
+                }
               }
               break;
             }
@@ -1667,7 +1739,7 @@ int main() {
             }
 
             // pilih hapus buku yang sudah dipilih
-            case '4':{
+            case '4': {
               //bersihkan layar
               system("clear");
 
@@ -1740,19 +1812,19 @@ int main() {
               std::cin >> isPause;
               break;
             }
+              
             // pilih transaksi
             case '5': {
               //bersihkan layar
               system("clear");
 
               // variabel yang dibutuhkan untuk transaksi
-              bukuTemp bufferBuku;
-              std::vector<bukuTemp> invoice;
-              std::ifstream baca;
-              std::string buffer[20];
+              std::string temp;
+              std::fstream data;
               std::string isBenarUser, isBenarPassword;
               fort::char_table table;
-              Dimas _157;
+              int noAntrian = 0;
+              bool status = true;
               isMenuUser = true;
 
               garis(37);
@@ -1765,61 +1837,47 @@ int main() {
               table << fort::endr;
               std::cout << table.to_string() << std::endl;
 
-              // baca data ktp untuk identitas pada invoice
-              baca.open("dataKTP/" + id + ".txt");
-              while (std::getline(baca, buffer[0], ',') &&
-                     std::getline(baca, buffer[1], ',') &&
-                     std::getline(baca, buffer[2], ',') &&
-                     std::getline(baca, buffer[3], ',') &&
-                     std::getline(baca, buffer[4], ',') &&
-                     std::getline(baca, buffer[5], ',') &&
-                     std::getline(baca, buffer[6], ',') &&
-                     std::getline(baca, buffer[7], ',') &&
-                     std::getline(baca, buffer[8], ',') &&
-                     std::getline(baca, buffer[9], ',') &&
-                     std::getline(baca, buffer[10], ',') &&
-                     std::getline(baca, buffer[11], ',') &&
-                     std::getline(baca, buffer[12], ',') &&
-                     std::getline(baca, buffer[13], ',') &&
-                     std::getline(baca, buffer[14], ',') &&
-                     std::getline(baca, buffer[15], ',') &&
-                     std::getline(baca, buffer[16], ',') &&
-                     std::getline(baca, buffer[17], ',') &&
-                     std::getline(baca, buffer[18], ',') &&
-                     std::getline(baca, buffer[19], ','))
-                ;
-              baca.close();
+              
 
-              // cek apakah keranjang kosong dan memasukkannya ke vector
-              baca.open("user/" + id + "_keranjang.txt", std::ios::in);
-              if (!baca.is_open()) {
-                std::cout << "Keranjang kosong" << std::endl;
-                exit(1);
-              }
-              while (std::getline(baca, bufferBuku.judul, ';') &&
-                     std::getline(baca, bufferBuku.penulis, ';') &&
-                     baca >> bufferBuku.tahunTerbit >> bufferBuku.stok) {
-                invoice.push_back(bufferBuku);
-              }
-              baca.close();
+              
 
               std::cout << "Username : ";
               std::cin >> isBenarUser;
               std::cout << "Password : ";
               std::cin >> isBenarPassword;
 
-              // cek apakah yang pinjam adalah yang login
-              if (isBenarUser == id && isBenarPassword == bufferPassword) {
-                fort::char_table table2;
-                table2 << fort::header << "    !!! Transaksi Berhasil !!!    ";
-                table2 << fort::endr;
-                std::cout << table2.to_string() << std::endl;
-                std::cout << std::endl;
+              // cek jika belum diacc tapi ingin pinjam lagi
+              data.open("Transaksi/" + id + "_status.txt", std::ios::in);
+              data >> status;
+              data.close();
+
+              if(status == true){
+                // cek apakah yang pinjam adalah yang login
+                if (isBenarUser == id && isBenarPassword == bufferPassword) {
+                  fort::char_table table2;
+                  table2 << fort::header << "    !!! Transaksi Berhasil !!!    " << fort::endr;
+                  table2 << "Mohon Tunggu di Acc" << fort::endr;
+                  table2 << fort::endr;
+                  table2.row(1).set_cell_text_align(fort::text_align::center);
+                  std::cout << table2.to_string() << std::endl;
+                  std::cout << std::endl;
+  
+                  data.open("Transaksi/noAntrian.txt", std::ios::in);
+                  while(data >> noAntrian &&
+                        std::getline(data, temp, ';'));
+                  data.close();
+                  
+                  data.open("Transaksi/noAntrian.txt", std::ios::app);
+                  data << ++noAntrian << ";" << id <<";";
+                  data.close();
+                  
+                  data.open("Transaksi/" + id + "_status.txt", std::ios::out);
+                  data << "0";
+                  data.close();
+                } 
                 
-                // isi invoice
-                _157.invoice2(waktuSekarang->tm_mday, 1 + waktuSekarang->tm_mon,
-                              1900 + waktuSekarang->tm_year, buffer[3],
-                              buffer[10], buffer[1], invoice);
+              } else {
+                  std::cout << "!!! Silakan tunggu di Acc !!!" << std::endl;
               }
 
               // hold a second
@@ -1828,8 +1886,99 @@ int main() {
               break;
             }
 
-            // ke luar dari menu
+            //pilih cek status peminjaman
             case '6': {
+              system("clear");
+              std::fstream data;
+              bool status;
+
+              data.open("Transaksi/" + id + "_status.txt", std::ios::in);
+              data >> status;
+              data.close();
+
+              if(status == true){
+                std::cout << "Sudah di Acc" << std::endl;
+                std::cout << "Cetaklah invoice sebagai bukti" << std::endl;
+              } else {
+                std::cout << "Belum di Acc" << std::endl;
+              }
+              
+              // hold a second
+              std::cout << "Input apa saja untuk melanjutkan... ";
+              std::cin >> isPause;
+              break;
+            }
+
+            case '7': {
+              //bersihkan layar
+              system("clear");
+              
+              //variabel yang dibutuhkan
+              std::vector<bukuTemp> invoice;
+              std::fstream data;
+              std::string buffer[20];
+              bukuTemp bufferBuku;
+              bool isAcc = false;
+              Dimas _157;
+
+              //cek sudah di acc ato belum
+              data.open("Transaksi/" + id + "_status.txt", std::ios::in);
+              data >> isAcc;
+              data.close();
+              
+              if(isAcc == true){
+                // cek apakah keranjang kosong dan memasukkannya ke vector
+                data.open("user/" + id + "_keranjang.txt", std::ios::in);
+                if (!data.is_open()) {
+                  std::cout << "Keranjang kosong" << std::endl;
+                  exit(1);
+                }
+                while (std::getline(data, bufferBuku.judul, ';') &&
+                       std::getline(data, bufferBuku.penulis, ';') &&
+                       data >> bufferBuku.tahunTerbit >> bufferBuku.stok) {
+                  invoice.push_back(bufferBuku);
+                }
+                data.close();
+                
+                // baca data ktp untuk identitas pada invoice
+                data.open("dataKTP/" + id + ".txt", std::ios::in);
+                while (std::getline(data, buffer[0], ',') &&
+                       std::getline(data, buffer[1], ',') &&
+                       std::getline(data, buffer[2], ',') &&
+                       std::getline(data, buffer[3], ',') &&
+                       std::getline(data, buffer[4], ',') &&
+                       std::getline(data, buffer[5], ',') &&
+                       std::getline(data, buffer[6], ',') &&
+                       std::getline(data, buffer[7], ',') &&
+                       std::getline(data, buffer[8], ',') &&
+                       std::getline(data, buffer[9], ',') &&
+                       std::getline(data, buffer[10], ',') &&
+                       std::getline(data, buffer[11], ',') &&
+                       std::getline(data, buffer[12], ',') &&
+                       std::getline(data, buffer[13], ',') &&
+                       std::getline(data, buffer[14], ',') &&
+                       std::getline(data, buffer[15], ',') &&
+                       std::getline(data, buffer[16], ',') &&
+                       std::getline(data, buffer[17], ',') &&
+                       std::getline(data, buffer[18], ',') &&
+                       std::getline(data, buffer[19], ','))
+                  ;
+                data.close();
+                
+                // isi invoice
+                _157.invoice2(waktuSekarang->tm_mday, 1 + waktuSekarang->tm_mon,
+                              1900 + waktuSekarang->tm_year, buffer[3],
+                              buffer[10], buffer[1], invoice);
+              } else {
+                std::cout << "Transaksi belum di Acc" << std::endl;
+              }
+              // hold a second
+              std::cout << "Input apa saja untuk melanjutkan... ";
+              std::cin >> isPause;
+              break;
+            }
+            // ke luar dari menu
+            case '8': {
               isMenuUser = false;
               break;
             }

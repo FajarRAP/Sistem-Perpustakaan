@@ -2,18 +2,18 @@
 ║                                 Invoice                                  ║
 ║                            Perpustakaan Empud                            ║
 ╟──────────────────────────────────────────────────────────────────────────╢
-║                                           Tanggal Order   : 25122022     ║
-║                                           No Invoice      : 25122022/991 ║
+║                                           Tanggal Order   : 31122022     ║
+║                                           No Invoice      : 31122022/599 ║
 ╟──────────────────────────────────────────────────────────────────────────╢
-║ Nama   : Dimas Tokip                                                     ║
-║ Alamat : Kapling                                                         ║
-║ Kota   : Karimun                                                         ║
+║ Nama   : FAJAR RIANSYAH                                                  ║
+║ Alamat : DUSUN SINGANDARU                                                ║
+║ Kota   : CIAMIS                                                          ║
 ╟────╥──────────────────────────────────╥────────────────╥─────────────────╢
 ║ No ║ Judul Buku                       ║ Tanggal Pinjam ║ Tanggal Kembali ║
 ╟────╫──────────────────────────────────╫────────────────╫─────────────────╢
-║ 1  ║ Si Bungkuk dari Notre-Dame       ║ 25 - 12 - 2022 ║ 28 - 12 - 2022  ║
-║ 2  ║ De Liefde                        ║ 25 - 12 - 2022 ║ 28 - 12 - 2022  ║
-║ 3  ║ Sejarah Dunia yang Disembunyikan ║ 25 - 12 - 2022 ║ 28 - 12 - 2022  ║
+║ 1  ║ De Liefde                        ║ 31 - 12 - 2022 ║ 34 - 12 - 2022  ║
+║ 2  ║ Sejarah Dunia yang Disembunyikan ║ 31 - 12 - 2022 ║ 34 - 12 - 2022  ║
+║ 3  ║ Spermatozoa pada Kambing         ║ 31 - 12 - 2022 ║ 34 - 12 - 2022  ║
 ╟────╨──────────────────────────────────╨────────────────╨─────────────────╢
 ║ *jika melewati batas/buku rusak, maka peminjam akan dikenakan denda!!    ║
 ╚══════════════════════════════════════════════════════════════════════════╝
