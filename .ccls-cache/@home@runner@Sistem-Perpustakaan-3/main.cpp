@@ -1405,7 +1405,13 @@ int main() {
             std::cout << "|>>    9. Filter Buku             <<|";
             std::cout << std::endl;
             garis2(37);
-            std::cout << "|>>    10. Ke luar                <<|";
+            std::cout << "|>>   10. Bookmark Buku           <<|";
+            std::cout << std::endl;
+            garis2(37);
+            std::cout << "|>>   11. Ekstrak Informasi Buku  <<|";
+            std::cout << std::endl;
+            garis2(37);
+            std::cout << "|>>   12. Ke luar                 <<|";
             std::cout << std::endl;
             garis(37);
             std::cout << "Pilih : ";
@@ -1899,6 +1905,7 @@ int main() {
               system("clear");
               std::fstream data;
               bool status;
+              isMenuUser = true;
 
               data.open("Transaksi/" + id + "_status.txt", std::ios::in);
               data >> status;
@@ -1929,6 +1936,7 @@ int main() {
               bukuTemp bufferBuku;
               bool isAcc = false;
               Dimas _157;
+              isMenuUser = true;
 
               //cek sudah di acc ato belum
               data.open("Transaksi/" + id + "_status.txt", std::ios::in);
@@ -1997,7 +2005,7 @@ int main() {
               std::vector<bukuTemp> bacaBuku;
               std::fstream data;
               bukuTemp buffer;
-              isMenuAdmin = true;
+              isMenuUser = true;
 
               //baca database buku
               bacaBuku.clear();
@@ -2167,9 +2175,158 @@ int main() {
               std::cin >> isPause;
               break;
             }
+
+            // pilih bookmark buku
+            case 10: {
+              // bersihkan layar
+              system("clear");
+
+              //variable yang dibutuhkan
+              std::vector<bukuTemp> bacaBuku;
+              std::fstream data;
+              bukuTemp buffer;
+              char pilih;
+              isMenuUser = true;
+
+              //baca database buku
+              bacaBuku.clear();
+              data.open("Buku.txt", std::ios::in);
+              while (std::getline(data, buffer.judul, ';') &&
+                     std::getline(data, buffer.penulis, ';') &&
+                     data >> buffer.tahunTerbit >> buffer.stok) {
+                bacaBuku.push_back(buffer);
+              }
+              data.close();
+              
+              // bikin tabel
+              fort::char_table table;
+              table.set_border_style(FT_SOLID_ROUND_STYLE);
+              table << fort::header << "Menu Bookmark Buku";
+              table << fort::endr;
+              table.row(0).set_cell_min_width(30);
+              table.row(0).set_cell_text_align(fort::text_align::center);
+              table.row(0).set_cell_bg_color(fort::color::black);
+              table.row(0).set_cell_content_fg_color(fort::color::red);
+              std::cout << table.to_string() << std::endl;
+
+              std::cout << "1. Bookmark" << std::endl;
+              std::cout << "2. Lihat Bookmark Saya" << std::endl;
+              std::cin >> pilih;
+
+              switch(pilih){
+                case '1': {
+                  int pilih;
+                  std::cout << "Pilih buku yang mau di bookmark : ";
+                  std::cin >> pilih;
+
+                  if(pilih - 1 < 0 || pilih - 1 >= bacaBuku.size()){
+                    std::cout << "Di luar kendali" << std::endl;
+                    exit(1);
+                  }
+                  data.open("user/" + id + "_bookmark.txt", std::ios::app);
+                  data << bacaBuku.at(pilih - 1).judul << ";";
+                  data << bacaBuku.at(pilih - 1).penulis << ";";
+                  data << bacaBuku.at(pilih - 1).tahunTerbit << " ";
+                  data << bacaBuku.at(pilih - 1).stok;
+                  data.close();
+
+                  std::cout << "!!! Buku berhasil di bookmark !!!" << std::endl;
+                  break;
+                }
+                case '2': {
+                  std::vector<bukuTemp> listBookmark;
+                  fort::char_table table;
+                  data.open("user/" + id + "_bookmark.txt", std::ios::in);
+                  while(std::getline(data, buffer.judul, ';') &&
+                        std::getline(data, buffer.penulis, ';') &&
+                        data >> buffer.tahunTerbit >> buffer.stok){
+                    listBookmark.push_back(buffer);
+                  }
+                  data.close();
+                  
+                  garis(37);
+                  std::cout << "|>>        Bookmark Saya          <<|" << std::endl;
+                  garis(37);
+                  
+                  table << "No";
+                  table << "Judul";
+                  table << "Penulis";
+                  table << "Tahun Terbit";
+                  table << "Stok" << fort::endr;
+                  table << fort::separator;
+                  for(int a = 0; a < listBookmark.size(); a++){
+                    table << a  + 1;
+                    table << listBookmark.at(a).judul;
+                    table << listBookmark.at(a).penulis;
+                    table << listBookmark.at(a).tahunTerbit;
+                    table << listBookmark.at(a).stok << fort::endr;
+                  }
+                  std::cout << table.to_string() << std::endl;
+                  break;
+                }
+              }
+
+              // hold a second
+              std::cout << "Input apa saja untuk melanjutkan... ";
+              std::cin >> isPause;
+              break;
+            }
+              
+            // pilih ekstrak info buku
+            case 11: {
+              // bersihkan layar
+              system("clear");
+
+              // variabel yang dibutuhkan
+              std::vector<bukuTemp> bacaBuku;
+              std::fstream data;
+              bukuTemp buffer;
+              int pilih;
+              isMenuUser = true;
+
+              // baca database buku
+              data.open("Buku.txt", std::ios::in);
+              while(std::getline(data, buffer.judul, ';') &&
+                        std::getline(data, buffer.penulis, ';') &&
+                        data >> buffer.tahunTerbit >> buffer.stok){
+                bacaBuku.push_back(buffer);
+              }
+              data.close();
+              
+              // bikin tabel
+              fort::char_table table;
+              table.set_border_style(FT_SOLID_ROUND_STYLE);
+              table << fort::header << "Menu Ekstrak Informasi Buku";
+              table << fort::endr;
+              table.row(0).set_cell_min_width(30);
+              table.row(0).set_cell_text_align(fort::text_align::center);
+              table.row(0).set_cell_bg_color(fort::color::green);
+              table.row(0).set_cell_content_fg_color(fort::color::yellow);
+              std::cout << table.to_string() << std::endl;
+
+              // pilih buku yang ingin di ekstrak
+              std::cout << "Pilih buku yang ingin di ekstrak : ";
+              std::cin >> pilih;
+
+              // tulis informasi ke txt
+              data.open("user/" + id + "_ekstrak.txt", std::ios::out);
+              data << bacaBuku.at(pilih - 1).judul << ";";
+              data << bacaBuku.at(pilih - 1).penulis << ";";
+              data << bacaBuku.at(pilih - 1).tahunTerbit << " ";
+              data << bacaBuku.at(pilih - 1).stok;
+              data.close();
+
+              // pesan
+              std::cout << "!!! Berhasil di ekstrak !!!" << std::endl;
+              
+              // hold a second
+              std::cout << "Input apa saja untuk melanjutkan... ";
+              std::cin >> isPause;
+              break;
+            }
               
             // ke luar dari menu
-            case 10: {
+            case 12: {
               isMenuUser = false;
               break;
             }

@@ -2,8 +2,8 @@
 ║                                 Invoice                                  ║
 ║                            Perpustakaan Empud                            ║
 ╟──────────────────────────────────────────────────────────────────────────╢
-║                                           Tanggal Order   : 31122022     ║
-║                                           No Invoice      : 31122022/599 ║
+║                                           Tanggal Order   : 112023       ║
+║                                           No Invoice      : 112023/201   ║
 ╟──────────────────────────────────────────────────────────────────────────╢
 ║ Nama   : FAJAR RIANSYAH                                                  ║
 ║ Alamat : DUSUN SINGANDARU                                                ║
@@ -11,9 +11,9 @@
 ╟────╥──────────────────────────────────╥────────────────╥─────────────────╢
 ║ No ║ Judul Buku                       ║ Tanggal Pinjam ║ Tanggal Kembali ║
 ╟────╫──────────────────────────────────╫────────────────╫─────────────────╢
-║ 1  ║ De Liefde                        ║ 31 - 12 - 2022 ║ 34 - 12 - 2022  ║
-║ 2  ║ Sejarah Dunia yang Disembunyikan ║ 31 - 12 - 2022 ║ 34 - 12 - 2022  ║
-║ 3  ║ Spermatozoa pada Kambing         ║ 31 - 12 - 2022 ║ 34 - 12 - 2022  ║
+║ 1  ║ De Liefde                        ║ 1 - 1 - 2023   ║ 4 - 1 - 2023    ║
+║ 2  ║ Sejarah Dunia yang Disembunyikan ║ 1 - 1 - 2023   ║ 4 - 1 - 2023    ║
+║ 3  ║ Spermatozoa pada Kambing         ║ 1 - 1 - 2023   ║ 4 - 1 - 2023    ║
 ╟────╨──────────────────────────────────╨────────────────╨─────────────────╢
 ║ *jika melewati batas/buku rusak, maka peminjam akan dikenakan denda!!    ║
 ╚══════════════════════════════════════════════════════════════════════════╝
