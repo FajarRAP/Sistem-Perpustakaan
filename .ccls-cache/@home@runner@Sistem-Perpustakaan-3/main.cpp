@@ -1,6 +1,3 @@
-#include "152.h"
-#include "157.h"
-#include "165.h"
 #include "behaviour.hpp"
 #include "class/DoublyLinkedList.hpp"
 #include "class/SinglyLinkedList.hpp"
@@ -25,12 +22,18 @@ using Random = effolkronium::random_static;
 // Pertemuan 1 : Rekursi
 void garis(int);
 void garis2(int);
+#include "165.h"
+#include "157.h"
+#include "152.h"
 
 int main() {
   // Pertemuan 3 : Array Dinamis
   std::vector<Buku> tempBuku;
   Array1D<Buku> arrBuku(0);
   StackArrayDinamis<Buku> stackBuku(3);
+  Sena _152;
+  Dimas _157;
+  Fajar _165;
   char menuUtama;
   // Pertemuan 2 : Array Statis
   int angka[5];
@@ -1173,37 +1176,9 @@ int main() {
                 std::vector<std::string> semuaNya;
                 std::fstream data;
                 std::string temp;
-                fort::char_table tabel;
                 isMenuAdmin = true;
 
-                //header
-                garis(37);
-                std::cout << "|>>       Menu Daftar Admin       <<|";
-                std::cout << std::endl;
-                garis(37);
-                
-                //baca database admin
-                data.open("admin/dataSemuaAdmin.txt", std::ios::in);
-                while(!data.eof()){
-                  std::getline(data, temp,';');
-                  semuaNya.push_back(temp);
-                }
-                data.close();
-
-                //cetak semua nama admin
-                tabel << "No" 
-                      << "Nama User" 
-                      << fort::endr;
-                tabel << fort::separator;
-                for(int a = 0; a < semuaNya.size()/20; a++){
-                  tabel << a + 1 
-                        << semuaNya.at(3 + (20 * a)) 
-                        << fort::endr;
-                }
-                tabel[0][1].set_cell_min_width(30);
-                tabel[0][1].set_cell_text_align(fort::text_align::center);
-                tabel.set_border_style(FT_DOUBLE_STYLE);
-                std::cout << tabel.to_string() << std::endl;
+                _152.dataAdmin(semuaNya, data, temp);
                 
                 // hold a second
                 std::cout << "Input apa saja untuk melanjutkan... ";
@@ -1220,37 +1195,9 @@ int main() {
                 std::vector<std::string> semuaNya;
                 std::fstream data;
                 std::string temp;
-                fort::char_table tabel;
                 isMenuAdmin = true;
                 
-                //header
-                garis(37);
-                std::cout << "|>>       Menu Daftar User        <<|";
-                std::cout << std::endl;
-                garis(37);
-                
-                //baca database user
-                data.open("user/dataSemuaUser.txt", std::ios::in);
-                while(!data.eof()){
-                  std::getline(data, temp,';');
-                  semuaNya.push_back(temp);
-                }
-                data.close();
-
-                //cetak semua nama user
-                tabel << "No" 
-                      << "Nama User" 
-                      << fort::endr;
-                tabel << fort::separator;
-                for(int a = 0; a < semuaNya.size()/20; a++){
-                  tabel << a + 1 
-                        << semuaNya.at(3 + (20 * a)) 
-                        << fort::endr;
-                }
-                tabel[0][1].set_cell_min_width(30);
-                tabel[0][1].set_cell_text_align(fort::text_align::center);
-                tabel.set_border_style(FT_DOUBLE_STYLE);
-                std::cout << tabel.to_string() << std::endl;
+                _157.dataPengguna(semuaNya, data, temp);
                 
                 // hold a second
                 std::cout << "Input apa saja untuk melanjutkan... ";
@@ -1258,7 +1205,7 @@ int main() {
                 break;
               }
 
-              //pilih kofirmasi transaksi
+              //pilih konfirmasi transaksi
               case 9: {
                 //bersihkan layar
                 system("clear");
@@ -1270,50 +1217,8 @@ int main() {
                 QueueDLL<Antrian> queue;
                 short no;
 
-                //header
-                garis(37);
-                std::cout << "|>>   Menu Konfirmasi Transaksi   <<|" << std::endl;
-                garis(37);
-
-                //baca antrian
-                data.open("Transaksi/noAntrian.txt", std::ios::in);
-                while(std::getline(data, temp.noAntrian, ';') &&
-                      std::getline(data, temp.id, ';'))
-                {
-                  queue.enqueue(temp);
-                  konfirmasiAntrian.push_back(temp);
-                  
-                }
-                data.close();
-
-                queue.display();
-
-                std::cout << "Acc antrian no : ";
-                std::cin >> no;
-
-                for(int a = 0; a < konfirmasiAntrian.size(); a++){
-                  if(no == stoi(konfirmasiAntrian.at(a).noAntrian)){
-                    data.open("Transaksi/" + konfirmasiAntrian.at(a).id + "_status.txt",
-                              std::ios::out);
-                    data << "1";
-                    data.close();
-                    konfirmasiAntrian.erase(konfirmasiAntrian.begin() + a);
-                  }
-                }
-                
-                if(konfirmasiAntrian.size() != 0){
-                std::cout<<"Masih aman 3" <<std::endl;
-                  data.open("Transaksi/noAntrian.txt", std::ios::out);
-                  for(int a = 0; a < konfirmasiAntrian.size(); a++){
-                    data << konfirmasiAntrian.at(a).noAntrian << " ";
-                    data << konfirmasiAntrian.at(a).id<<";";
-                  }
-                  data.close();
-                }else{
-                  data.open("Transaksi/noAntrian.txt", std::ios::out);
-                  data << "";
-                  data.close();
-                }
+                //pepe
+                _152.antrianPeminjam(konfirmasiAntrian, data, temp, queue, no);
 
                 // hold a second
                 std::cout << "Input apa saja untuk melanjutkan... ";
@@ -1333,6 +1238,13 @@ int main() {
               }
             }
           }
+        }
+        else {
+          std::cout << "Username/Password salah" << std::endl;
+
+          // hold a second
+          std::cout << "Input apa saja untuk melanjutkan... ";
+          std::cin >> isPause;
         }
         break;
       }
@@ -1622,73 +1534,14 @@ int main() {
               std::cout << std::endl;
               garis(37);
 
-              // clear list sebelumnya (jika ada) kemudian baca
-              bacaBuku.clear();
-              data.open("Buku.txt");
-              while (std::getline(data, buffer.judul, ';') &&
-                     std::getline(data, buffer.penulis, ';') &&
-                     data >> buffer.tahunTerbit >> buffer.stok) {
-                bacaBuku.push_back(buffer);
-              }
-              data.close();
-              
-              // pengecekan maksimal buku
-              maksBuku.clear();
-              data.open("user/" + id + "_keranjang.txt", std::ios::in);
-              while (std::getline(data, buffer.judul, ';') &&
-                     std::getline(data, buffer.penulis, ';') &&
-                     data >> buffer.tahunTerbit >> buffer.stok) {
-                maksBuku.push_back(buffer);
-              }
-              data.close();
-
-              // input user memilih buku yang ingin dipinjam
-              std::cout << "Pilih Buku yang ingin dipinjam : ";
-              std::cin >> pilihBuku;
-
-              if (pilihBuku - 1 < 0 || pilihBuku - 1 > bacaBuku.size()) {
-                std::cout << "Buku tidak tersedia " << std::endl;
-                exit(1);
-              }
-
-              // simpan hasil pilih user sementara ke buffer
-              buffer.judul = bacaBuku.at(pilihBuku - 1).judul;
-              buffer.penulis = bacaBuku.at(pilihBuku - 1).penulis;
-              buffer.tahunTerbit = bacaBuku.at(pilihBuku - 1).tahunTerbit;
-              buffer.stok = bacaBuku.at(pilihBuku - 1).stok;
-
-              if (maksBuku.size() != 3) {
-
-                // masukkan ke buku untuk stack
-                keStack.setJudul(bacaBuku.at(pilihBuku - 1).judul.c_str());
-                keStack.setPenulis(bacaBuku.at(pilihBuku - 1).penulis.c_str());
-                keStack.setTahunTerbit(bacaBuku.at(pilihBuku - 1).tahunTerbit);
-                keStack.setStok(bacaBuku.at(pilihBuku - 1).stok);
-
-                // push ke stack
-                stackBuku.push(keStack);
-
-                // tulis ke database user yang login
-                data.open("user/" + id + "_keranjang.txt",
-                          std::ios::out | std::ios::app);
-                data << buffer.judul;
-                data << ";" << buffer.penulis;
-                data << ";" << buffer.tahunTerbit;
-                data << " " << buffer.stok;
-                data.close();
-
-                // pesan
-                garis2(37);
-                std::cout << "|>>   Buku Berhasil ditambahkan   <<|";
-                std::cout << std::endl;
-                garis2(37);
-              } 
-              else {
-                std::cout << std::endl;
-                std::cout << "!!!Maksimal buku yang dipinjam adalah 3!!!";
-                std::cout << std::endl;
-                std::cout << std::endl;
-              }
+              _152.keranjang(bacaBuku, 
+                             maksBuku, 
+                             data, 
+                             buffer, 
+                             keStack, 
+                             stackBuku, 
+                             id, 
+                             pilihBuku);
               
               // hold a second
               std::cout << "Input apa saja untuk melanjutkan... ";
@@ -1763,63 +1616,7 @@ int main() {
               int pilih;
               isMenuUser = true;
 
-              // bikin tabel
-              fort::char_table table;
-              fort::char_table table2;
-              table.set_border_style(FT_NICE_STYLE);
-              table << fort::header << "No";
-              table << "Judul Buku";
-              table << fort::endr;
-              
-              //header
-              garis(37);
-              std::cout << "|>>      Menu Hapus Buku Saya     <<|";
-              std::cout << std::endl;
-              garis(37);
-              std::cout << std::endl;
-
-              // baca database user yang login
-              keranjang.clear();
-              data.open("user/" + id + "_keranjang.txt", std::ios::in);
-              while (std::getline(data, buffer.judul, ';') &&
-                     std::getline(data, buffer.penulis, ';') &&
-                     data >> buffer.tahunTerbit >> buffer.stok) {
-                keranjang.push_back(buffer);
-              }
-              if (!data.is_open() || keranjang.size() == 0) {
-                std::cout << "!!! Keranjang kosong !!!" << std::endl;
-                exit(1);
-              }
-              data.close();
-
-              for(int a = 0; a < keranjang.size(); a++){
-                table << a + 1 << keranjang.at(a).judul;
-                table << fort::endr;
-              }
-
-              std::cout << table.to_string() << std::endl;
-              
-              //pilih buku yang mau dihapus
-              std::cout << "Buku yang mau dihapus : ";
-              std::cin >> pilih;
-              if(pilih - 1 < 0 || pilih - 1 >= keranjang.size()){
-                std::cout << "Di luar kendali" << std::endl;
-                exit(1);
-              }
-              table2 << keranjang.at(pilih - 1).judul;
-
-              std::cout << table2.to_string();
-              std::cout << "!!! Berhasil dihapus !!!" << std::endl << std::endl;
-              keranjang.erase(keranjang.begin() + pilih - 1);
-
-              data.open("user/" + id + "_keranjang.txt", std::ios::out);
-              for(int a = 0; a < keranjang.size(); a++){
-                data << keranjang.at(a).judul << ";";
-                data << keranjang.at(a).penulis <<";";
-                data << keranjang.at(a).tahunTerbit << " ";
-                data << keranjang.at(a).stok;
-              }
-              data.close();
+              _152.hapusBukuKeranjang(keranjang, data, buffer, pilih, id);
               
               // hold a second
               std::cout << "Input apa saja untuk melanjutkan... ";
@@ -1849,11 +1646,7 @@ int main() {
 
               table << fort::header << "   !!! Konfirmasi Identitas !!!   ";
               table << fort::endr;
-              std::cout << table.to_string() << std::endl;
-
-              
-
-              
+              std::cout << table.to_string() << std::endl;              
 
               std::cout << "Username : ";
               std::cin >> isBenarUser;
@@ -1902,15 +1695,26 @@ int main() {
 
             // pilih cek status peminjaman
             case 6: {
+              //bersihkan layar
               system("clear");
+
+              //variabel yang dibutuhkan
               std::fstream data;
               bool status;
               isMenuUser = true;
 
+              //header
+              garis(37);
+              std::cout << "|>>        Menu Cek Status       <<|";
+              std::cout << std::endl;
+              garis(37);
+              
+              //baca status
               data.open("Transaksi/" + id + "_status.txt", std::ios::in);
               data >> status;
               data.close();
 
+              //cek kondisi jika sudah di acc ato belum
               if(status == true){
                 std::cout << "Sudah di Acc" << std::endl;
                 std::cout << "Cetaklah invoice sebagai bukti" << std::endl;
@@ -1935,9 +1739,14 @@ int main() {
               std::string buffer[20];
               bukuTemp bufferBuku;
               bool isAcc = false;
-              Dimas _157;
               isMenuUser = true;
 
+              //header
+              garis(37);
+              std::cout << "|>>       Menu Cetak Invoice      <<|";
+              std::cout << std::endl;
+              garis(37);
+              
               //cek sudah di acc ato belum
               data.open("Transaksi/" + id + "_status.txt", std::ios::in);
               data >> isAcc;
@@ -1985,10 +1794,13 @@ int main() {
                 // isi invoice
                 _157.invoice2(waktuSekarang->tm_mday, 1 + waktuSekarang->tm_mon,
                               1900 + waktuSekarang->tm_year, buffer[3],
-                              buffer[10], buffer[1], invoice);
+                              buffer[10], buffer[1], invoice, id);
+                // pesan
+                std::cout << "Invoice berhasil dicetak" << std::endl;
               } else {
                 std::cout << "Transaksi belum di Acc" << std::endl;
               }
+
               // hold a second
               std::cout << "Input apa saja untuk melanjutkan... ";
               std::cin >> isPause;
@@ -2006,56 +1818,9 @@ int main() {
               std::fstream data;
               bukuTemp buffer;
               isMenuUser = true;
-
-              //baca database buku
-              bacaBuku.clear();
-              data.open("Buku.txt");
-              while (std::getline(data, buffer.judul, ';') &&
-                     std::getline(data, buffer.penulis, ';') &&
-                     data >> buffer.tahunTerbit >> buffer.stok) {
-                bacaBuku.push_back(buffer);
-              }
-              data.close();
-
-              // bikin tabel
-              fort::char_table tableSearch;
-              fort::char_table tableSearch2;
-              tableSearch.set_border_style(FT_SOLID_ROUND_STYLE);
-              tableSearch << fort::header << "Menu Cari Buku" << fort::endr;
-              tableSearch.row(0).set_cell_min_width(30);
-              tableSearch.row(0).set_cell_text_align(fort::text_align::center);
-              tableSearch.row(0).set_cell_bg_color(fort::color::light_red);
-              tableSearch.row(0).set_cell_content_fg_color(fort::color::green);
-              std::cout << tableSearch.to_string() << std::endl;
-              std::cout << "Cari Buku : ";
-              std::cin >> cari;
-
-              // desain tabel
-              tableSearch2 << fort::header << "No"
-                           << "Judul Buku"
-                           << "Penulis Buku "
-                           << "Tahun Terbit"
-                           << "Stok Tersedia" << fort::endr;
-
-              for (int a = 0, b = 0; a < bacaBuku.size(); a++) {
-                if (bacaBuku.at(a).judul.find(cari) != std::string::npos ||
-                    bacaBuku.at(a).penulis.find(cari) != std::string::npos) {
-                  tableSearch2
-                      << b + 1 << bacaBuku.at(a).judul << bacaBuku.at(a).penulis
-                      << bacaBuku.at(a).tahunTerbit << bacaBuku.at(a).stok
-                      << fort::endr;
-                  b++;
-                }
-              }
-
-              tableSearch2.set_border_style(FT_DOUBLE_STYLE);
-              tableSearch2.set_cell_content_fg_color(fort::color::magenta);
-              tableSearch2.column(3).set_cell_text_align(fort::text_align::center);
-              tableSearch2.column(4).set_cell_text_align(fort::text_align::center);
-
-              // cetak tabel
-              std::cout << tableSearch2.to_string() << std::endl;
-
+              
+              _165.searchBuku(bacaBuku, data, buffer, cari);
+              
               // hold a second
               std::cout << "Input apa saja untuk melanjutkan... ";
               std::cin >> isPause;
@@ -2074,101 +1839,8 @@ int main() {
               char pilih;
               isMenuAdmin = true;
 
-              //baca database buku
-              bacaBuku.clear();
-              data.open("Buku.txt");
-              while (std::getline(data, buffer.judul, ';') &&
-                     std::getline(data, buffer.penulis, ';') &&
-                     data >> buffer.tahunTerbit >> buffer.stok) {
-                bacaBuku.push_back(buffer);
-              }
-              data.close();
-
-              // bikin tabel
-              fort::char_table table;
-              table.set_border_style(FT_SOLID_ROUND_STYLE);
-              table << fort::header << "Menu Filter Buku" << fort::endr;
-              table.row(0).set_cell_min_width(30);
-              table.row(0).set_cell_text_align(fort::text_align::center);
-              table.row(0).set_cell_bg_color(fort::color::red);
-              table.row(0).set_cell_content_fg_color(fort::color::cyan);
-              std::cout << table.to_string() << std::endl;
-              
-              garis(37);
-              std::cout << "|>>     Filter Buku dengan :      <<|" << std::endl;
-              garis(37);
-              std::cout << "|>>  1. Judul                     <<|" << std::endl;
-              garis2(37);
-              std::cout << "|>>  2. Penulis                   <<|" << std::endl;
-              garis2(37);
-              std::cout << "|>>  3. Tahun Terbit              <<|" << std::endl;
-              garis2(37);
-              std::cout << "|>>  4. Stok                      <<|" << std::endl;
-              garis(37);
-              std::cout << "Pilih : ";
-              std::cin >> pilih;
-
-              switch(pilih){
-                //pilih filter judul
-                case '1': {
-                  fort::char_table table2;
-                  table2 << "Filter berdasarkan Judul" << fort::endr;
-                  table2 << fort::separator;
-                  for(int a = 0; a < bacaBuku.size(); a++){
-                    table2 << a + 1 << bacaBuku.at(a).judul << fort::endr;
-                  }
-                  table2[0][0].set_cell_span(2);
-                  table2.row(0).set_cell_text_align(fort::text_align::center);
-                  table2.set_border_style(FT_NICE_STYLE);
-                  std::cout << table2.to_string() << std::endl;
-                  break;
-                }
-
-                //pilih filter penulis
-                case '2': {
-                  fort::char_table table2;
-                  table2 << "Filter berdasarkan Penulis" << fort::endr;
-                  table2 << fort::separator;
-                  for(int a = 0; a < bacaBuku.size(); a++){
-                    table2 << a + 1 << bacaBuku.at(a).penulis << fort::endr;
-                  }
-                  table2[0][0].set_cell_span(2);
-                  table2.row(0).set_cell_text_align(fort::text_align::center);
-                  table2.set_border_style(FT_NICE_STYLE);
-                  std::cout << table2.to_string() << std::endl;
-                  break;
-                }
-
-                //pilih filter tahun terbit
-                case '3': {
-                  fort::char_table table2;
-                  table2 << "Filter berdasarkan Tahun Terbit" << fort::endr;
-                  table2 << fort::separator;
-                  for(int a = 0; a < bacaBuku.size(); a++){
-                    table2 << a + 1 << bacaBuku.at(a).tahunTerbit << fort::endr;
-                  }
-                  table2[0][0].set_cell_span(2);
-                  table2.row(0).set_cell_text_align(fort::text_align::center);
-                  table2.set_border_style(FT_NICE_STYLE);
-                  std::cout << table2.to_string() << std::endl;
-                  break;
-                }
-
-                //pilih filter stok
-                case '4': {
-                  fort::char_table table2;
-                  table2 << "Filter berdasarkan Stok" << fort::endr;
-                  table2 << fort::separator;
-                  for(int a = 0; a < bacaBuku.size(); a++){
-                    table2 << a + 1 << bacaBuku.at(a).stok << fort::endr;
-                  }
-                  table2[0][0].set_cell_span(2);
-                  table2.row(0).set_cell_text_align(fort::text_align::center);
-                  table2.set_border_style(FT_NICE_STYLE);
-                  std::cout << table2.to_string() << std::endl;
-                  break;
-                }
-              }
+//pepe
+              _165.filterBuku(bacaBuku, data, buffer, pilih);
               
               // hold a second
               std::cout << "Input apa saja untuk melanjutkan... ";
@@ -2188,83 +1860,7 @@ int main() {
               char pilih;
               isMenuUser = true;
 
-              //baca database buku
-              bacaBuku.clear();
-              data.open("Buku.txt", std::ios::in);
-              while (std::getline(data, buffer.judul, ';') &&
-                     std::getline(data, buffer.penulis, ';') &&
-                     data >> buffer.tahunTerbit >> buffer.stok) {
-                bacaBuku.push_back(buffer);
-              }
-              data.close();
-              
-              // bikin tabel
-              fort::char_table table;
-              table.set_border_style(FT_SOLID_ROUND_STYLE);
-              table << fort::header << "Menu Bookmark Buku";
-              table << fort::endr;
-              table.row(0).set_cell_min_width(30);
-              table.row(0).set_cell_text_align(fort::text_align::center);
-              table.row(0).set_cell_bg_color(fort::color::black);
-              table.row(0).set_cell_content_fg_color(fort::color::red);
-              std::cout << table.to_string() << std::endl;
-
-              std::cout << "1. Bookmark" << std::endl;
-              std::cout << "2. Lihat Bookmark Saya" << std::endl;
-              std::cin >> pilih;
-
-              switch(pilih){
-                case '1': {
-                  int pilih;
-                  std::cout << "Pilih buku yang mau di bookmark : ";
-                  std::cin >> pilih;
-
-                  if(pilih - 1 < 0 || pilih - 1 >= bacaBuku.size()){
-                    std::cout << "Di luar kendali" << std::endl;
-                    exit(1);
-                  }
-                  data.open("user/" + id + "_bookmark.txt", std::ios::app);
-                  data << bacaBuku.at(pilih - 1).judul << ";";
-                  data << bacaBuku.at(pilih - 1).penulis << ";";
-                  data << bacaBuku.at(pilih - 1).tahunTerbit << " ";
-                  data << bacaBuku.at(pilih - 1).stok;
-                  data.close();
-
-                  std::cout << "!!! Buku berhasil di bookmark !!!" << std::endl;
-                  break;
-                }
-                case '2': {
-                  std::vector<bukuTemp> listBookmark;
-                  fort::char_table table;
-                  data.open("user/" + id + "_bookmark.txt", std::ios::in);
-                  while(std::getline(data, buffer.judul, ';') &&
-                        std::getline(data, buffer.penulis, ';') &&
-                        data >> buffer.tahunTerbit >> buffer.stok){
-                    listBookmark.push_back(buffer);
-                  }
-                  data.close();
-                  
-                  garis(37);
-                  std::cout << "|>>        Bookmark Saya          <<|" << std::endl;
-                  garis(37);
-                  
-                  table << "No";
-                  table << "Judul";
-                  table << "Penulis";
-                  table << "Tahun Terbit";
-                  table << "Stok" << fort::endr;
-                  table << fort::separator;
-                  for(int a = 0; a < listBookmark.size(); a++){
-                    table << a  + 1;
-                    table << listBookmark.at(a).judul;
-                    table << listBookmark.at(a).penulis;
-                    table << listBookmark.at(a).tahunTerbit;
-                    table << listBookmark.at(a).stok << fort::endr;
-                  }
-                  std::cout << table.to_string() << std::endl;
-                  break;
-                }
-              }
+              _157.bookmark(bacaBuku, data, buffer, pilih, id);
 
               // hold a second
               std::cout << "Input apa saja untuk melanjutkan... ";
@@ -2284,40 +1880,7 @@ int main() {
               int pilih;
               isMenuUser = true;
 
-              // baca database buku
-              data.open("Buku.txt", std::ios::in);
-              while(std::getline(data, buffer.judul, ';') &&
-                        std::getline(data, buffer.penulis, ';') &&
-                        data >> buffer.tahunTerbit >> buffer.stok){
-                bacaBuku.push_back(buffer);
-              }
-              data.close();
-              
-              // bikin tabel
-              fort::char_table table;
-              table.set_border_style(FT_SOLID_ROUND_STYLE);
-              table << fort::header << "Menu Ekstrak Informasi Buku";
-              table << fort::endr;
-              table.row(0).set_cell_min_width(30);
-              table.row(0).set_cell_text_align(fort::text_align::center);
-              table.row(0).set_cell_bg_color(fort::color::green);
-              table.row(0).set_cell_content_fg_color(fort::color::yellow);
-              std::cout << table.to_string() << std::endl;
-
-              // pilih buku yang ingin di ekstrak
-              std::cout << "Pilih buku yang ingin di ekstrak : ";
-              std::cin >> pilih;
-
-              // tulis informasi ke txt
-              data.open("user/" + id + "_ekstrak.txt", std::ios::out);
-              data << bacaBuku.at(pilih - 1).judul << ";";
-              data << bacaBuku.at(pilih - 1).penulis << ";";
-              data << bacaBuku.at(pilih - 1).tahunTerbit << " ";
-              data << bacaBuku.at(pilih - 1).stok;
-              data.close();
-
-              // pesan
-              std::cout << "!!! Berhasil di ekstrak !!!" << std::endl;
+              _165.ekstrakBuku(bacaBuku, data, buffer, pilih, id);
               
               // hold a second
               std::cout << "Input apa saja untuk melanjutkan... ";
@@ -2334,6 +1897,13 @@ int main() {
               std::cout << "Pilihan tidak tersedia" << std::endl;
             }
           }
+        }
+        else {
+          std::cout << "Username/Password salah" << std::endl;
+
+          // hold a second
+          std::cout << "Input apa saja untuk melanjutkan... ";
+          std::cin >> isPause;
         }
         break;
       }
@@ -2395,10 +1965,14 @@ int main() {
         }
         data.close();
         
-        // tulis password yang telah diregister kontol
+        // tulis password yang telah diregister
         data.open("admin/" + nik + ".txt", std::ios::out | std::ios::trunc);
         data << password;
         data.close();
+
+
+        //pesan
+        std::cout << "Berhasil daftar sebagai Admin" << std::endl;
         
         // hold a second
         std::cout << "Input apa saja untuk melanjutkan... ";
@@ -2430,6 +2004,13 @@ int main() {
         data.open("user/" + nik + ".txt", std::ios::out | std::ios::trunc);
         data << password;
         data.close();
+
+        //pesan
+        std::cout << "Berhasil daftar sebagai User" << std::endl;
+        
+        // hold a second
+        std::cout << "Input apa saja untuk melanjutkan... ";
+        std::cin >> isPause;
         break;
       }
       }
@@ -2439,14 +2020,21 @@ int main() {
     // pilih input ktp
     case '3': {
       isMenuUtama = true;
-      Sena _152;
       _152.inputKTP();
+
+      //pesan
+      std::cout << "Berhasil input KTP" << std::endl;
+      
+      // hold a second
+      std::cout << "Input apa saja untuk melanjutkan... ";
+      std::cin >> isPause;
       break;
     }
 
     // pilih exit
     case '4': {
       isMenuUtama = false;
+      std::cout << "Semoga Senantian=sa"
       break;
     }
     default: {
