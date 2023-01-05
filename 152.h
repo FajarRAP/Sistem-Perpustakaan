@@ -1,6 +1,7 @@
 #ifndef __sena
 #define __sena
 #include "class/ktp.hpp"
+#include "class/fort.hpp"
 
 class Sena{
   public:
@@ -29,6 +30,8 @@ class Sena{
                    StackArrayDinamis<Buku> &stackBuku, 
                    std::string &id, 
                    int &pilihBuku) {
+      fort::char_table table;
+      
       // clear list sebelumnya (jika ada) kemudian baca
       bacaBuku.clear();
       data.open("Buku.txt");
@@ -38,6 +41,30 @@ class Sena{
         bacaBuku.push_back(buffer);
       }
       data.close();
+      
+      table << "List Buku" << fort::endr;
+      table << fort::separator;
+      table << "No";
+      table << "Judul";
+      table << "Penulis";
+      table << "Tahun Terbit";
+      table << "Stok" << fort::endr;
+      table << fort::separator;
+
+      for(int a = 0; a < bacaBuku.size(); a++){
+        table << a + 1;
+        table << bacaBuku.at(a).judul;
+        table << bacaBuku.at(a).penulis;
+        table << bacaBuku.at(a).tahunTerbit;
+        table << bacaBuku.at(a).stok << fort::endr;
+      }
+      
+      table[0][0].set_cell_span(5);
+      table.row(0).set_cell_text_align(fort::text_align::center);
+      table.row(1).set_cell_text_align(fort::text_align::center);
+      table.set_border_style(FT_NICE_STYLE);
+      
+      std::cout << table.to_string() << std::endl;
       
       // pengecekan maksimal buku
       maksBuku.clear();
@@ -97,11 +124,14 @@ class Sena{
         std::cout << std::endl;
       }
     }
-    void antrianPeminjam(std::vector<Antrian> &konfirmasiAntrian, 
+    void antrianPeminjam(std::vector<Antrian> &antrianBiasa, 
+                         std::vector<Antrian> &antrianPrioritas,
                          std::fstream &data, 
                          Antrian &temp, 
-                         QueueDLL<Antrian> &queue, 
-                         short &no) {
+                         QueueDLL<Antrian> &queue,
+                         PriorityQueue<Antrian> &pqueue,
+                         short &no,
+                         short &pilih) {
       bool ketemu = false;
       
       //header
@@ -115,44 +145,107 @@ class Sena{
       while(std::getline(data, temp.noAntrian, ';') &&
             std::getline(data, temp.id, ';')){
         queue.enqueue(temp);
-        konfirmasiAntrian.push_back(temp);
-        
+        antrianBiasa.push_back(temp);
       }
       data.close();
-  
+      
+      //baca antrian prioritas
+      data.open("Transaksi/noAntrianPrioritas.txt", std::ios::in);
+      while(std::getline(data, temp.noAntrian, ';') &&
+            std::getline(data, temp.id, ';')){
+        pqueue.enqueue(temp, 1);
+        antrianPrioritas.push_back(temp);
+      }
+      data.close();
+
+      pqueue.display();
       queue.display();
 
-      if(!queue.isEmpty()){
-        std::cout << "Acc antrian no : ";
-        std::cin >> no;
-    
-        for(int a = 0; a < konfirmasiAntrian.size(); a++){
-          if(no == stoi(konfirmasiAntrian.at(a).noAntrian)){
-            data.open("Transaksi/" + konfirmasiAntrian.at(a).id + "_status.txt",
-                      std::ios::out);
-            data << "1";
-            data.close();
-            konfirmasiAntrian.erase(konfirmasiAntrian.begin() + a);
-            ketemu = true;
-          }
-        }
-
-        if(ketemu == false){
-          std::cout << "No Antrian tidak ada" << std::endl;
-          return;
-        }
-        
-        if(konfirmasiAntrian.size() != 0){
-          data.open("Transaksi/noAntrian.txt", std::ios::out);
-          for(int a = 0; a < konfirmasiAntrian.size(); a++){
-            data << konfirmasiAntrian.at(a).noAntrian << ";";
-            data << konfirmasiAntrian.at(a).id<<";";
-          }
-          data.close();
-        }else{
-          data.open("Transaksi/noAntrian.txt", std::ios::out);
-          data << "";
-          data.close();
+      if(!queue.isEmpty() || !pqueue.isEmpty()){
+        std::cout << "1. Antrian Prioritas" << std::endl;
+        std::cout << "2. Antrian Reguler" << std::endl;
+        std::cout << "Pilih : ";
+        std::cin >> pilih;
+        switch(pilih){
+          case 1:
+            if(!pqueue.isEmpty()){
+              std::cout << "Acc antrian no : ";
+              std::cin >> no;
+          
+              for(int a = 0; a < antrianPrioritas.size(); a++){
+                if(no == stoi(antrianPrioritas.at(a).noAntrian)){
+                  data.open("Transaksi/" + antrianPrioritas.at(a).id + "_status.txt",
+                            std::ios::out);
+                  data << "1";
+                  data.close();
+                  
+                  std::cout << "Antrian berhasil diterima" << std::endl;
+                  antrianPrioritas.erase(antrianPrioritas.begin() + a);
+                  ketemu = true;
+      
+                  if(antrianPrioritas.size() != 0) {
+                  data.open("Transaksi/noAntrianPrioritas.txt", std::ios::out);
+                  for(int a = 0; a < antrianPrioritas.size(); a++){
+                    data << antrianPrioritas.at(a).noAntrian << ";";
+                    data << antrianPrioritas.at(a).id<<";";
+                  }
+                  data.close();
+                  }else{
+                    data.open("Transaksi/noAntrianPrioritas.txt", std::ios::out);
+                    data << "";
+                    data.close();
+                  }
+                  
+                }
+              }
+      
+              if(ketemu == false){
+                std::cout << "No Antrian tidak ada" << std::endl;
+                return;
+              }
+            }else{
+              std::cout << "Antrian Prioritas Kosong" << std::endl;
+            }
+            break;
+          case 2:
+            if(!queue.isEmpty()){
+              std::cout << "Acc antrian no : ";
+              std::cin >> no;
+          
+              for(int a = 0; a < antrianBiasa.size(); a++){
+                if(no == stoi(antrianBiasa.at(a).noAntrian)){
+                  data.open("Transaksi/" + antrianBiasa.at(a).id + "_status.txt",
+                            std::ios::out);
+                  data << "1";
+                  data.close();
+                  
+                  std::cout << "Antrian berhasil diterima" << std::endl;
+                  antrianBiasa.erase(antrianBiasa.begin() + a);
+                  ketemu = true;
+      
+                  if(antrianBiasa.size() != 0){
+                  data.open("Transaksi/noAntrian.txt", std::ios::out);
+                  for(int a = 0; a < antrianBiasa.size(); a++){
+                    data << antrianBiasa.at(a).noAntrian << ";";
+                    data << antrianBiasa.at(a).id<<";";
+                  }
+                  data.close();
+                  }else{
+                    data.open("Transaksi/noAntrian.txt", std::ios::out);
+                    data << "";
+                    data.close();
+                  }
+                }
+              }
+      
+              if(ketemu == false){
+                std::cout << "No Antrian tidak ada" << std::endl;
+                return;
+              }
+            }else{
+              std::cout << "Antrian Reguler Kosong" << std::endl;
+            }
+            break;
         }
       }
     }

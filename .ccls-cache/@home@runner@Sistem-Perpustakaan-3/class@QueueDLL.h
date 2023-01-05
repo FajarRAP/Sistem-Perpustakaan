@@ -114,6 +114,8 @@ void QueueDLL<T>::display()
   if (!isEmpty()) 
   {
     fort::char_table table;
+    table << "Antrian Reguler" << fort::endr;
+    table << fort::separator;
     table << "No Antrian" << "ID User" << fort::endr;
     table << fort::separator;
     Node<T> *jalan = this->kepala;
@@ -124,10 +126,11 @@ void QueueDLL<T>::display()
     }
     table.set_border_style(FT_NICE_STYLE);
     table.column(0).set_cell_text_align(fort::text_align::center);
+    table[0][0].set_cell_span(2);
+    table.row(0).set_cell_text_align(fort::text_align::center);
     std::cout << table.to_string() << std::endl;
     return;
   }
-  std::cout << "Antrian Kosong" << std::endl;
 }
 
 #endif

@@ -3,6 +3,7 @@
 #include "class/SinglyLinkedList.hpp"
 #include "class/StackArrayDinamis.hpp"
 #include "class/QueueDLL.h"
+#include "class/PriorityQueue.hpp"
 #include "class/admin.hpp"
 #include "class/array1d.hpp"
 #include "class/buku.hpp"
@@ -1211,14 +1212,23 @@ int main() {
                 system("clear");
 
                 //variabel yang dibutuhkan
-                std::vector<Antrian> konfirmasiAntrian;
+                std::vector<Antrian> antrianBiasa;
+                std::vector<Antrian> antrianPrioritas;
                 std::fstream data;
                 Antrian temp;
                 QueueDLL<Antrian> queue;
+                PriorityQueue<Antrian> pqueue;
                 short no;
+                short pilih;
 
-                //pepe
-                _152.antrianPeminjam(konfirmasiAntrian, data, temp, queue, no);
+                _152.antrianPeminjam(antrianBiasa,
+                                     antrianPrioritas,
+                                     data,
+                                     temp,
+                                     queue,
+                                     pqueue,
+                                     no,
+                                     pilih);
 
                 // hold a second
                 std::cout << "Input apa saja untuk melanjutkan... ";
@@ -1635,6 +1645,7 @@ int main() {
               std::string isBenarUser, isBenarPassword;
               fort::char_table table;
               int noAntrian = 0;
+              char isKartuMember;
               bool status = true;
               isMenuUser = true;
 
@@ -1661,26 +1672,60 @@ int main() {
               if(status == true){
                 // cek apakah yang pinjam adalah yang login
                 if (isBenarUser == id && isBenarPassword == bufferPassword) {
-                  fort::char_table table2;
-                  table2 << fort::header << "    !!! Transaksi Berhasil !!!    " << fort::endr;
-                  table2 << "Mohon Tunggu di Acc" << fort::endr;
-                  table2 << fort::endr;
-                  table2.row(1).set_cell_text_align(fort::text_align::center);
-                  std::cout << table2.to_string() << std::endl;
-                  std::cout << std::endl;
-  
-                  data.open("Transaksi/noAntrian.txt", std::ios::in);
-                  while(data >> noAntrian &&
-                        std::getline(data, temp, ';'));
-                  data.close();
-                  
-                  data.open("Transaksi/noAntrian.txt", std::ios::app);
-                  data << ++noAntrian << ";" << id <<";";
-                  data.close();
-                  
-                  data.open("Transaksi/" + id + "_status.txt", std::ios::out);
-                  data << "0";
-                  data.close();
+                  std::cout << "Apakah kamu memiliki kartu member? (y/n)";
+                  std::cin >> isKartuMember;
+                  switch(isKartuMember){
+                    case 'Y':
+                    case 'y':{
+                      noAntrian = 0;
+                      std::cout << "Pake kartu member" << std::endl;
+                      fort::char_table table2;
+                      table2 << fort::header << "    !!! Transaksi Berhasil !!!    " << fort::endr;
+                      table2 << "Mohon Tunggu di Acc" << fort::endr;
+                      table2 << fort::endr;
+                      table2.row(1).set_cell_text_align(fort::text_align::center);
+                      std::cout << table2.to_string() << std::endl;
+                      std::cout << std::endl;
+      
+                      data.open("Transaksi/noAntrianPrioritas.txt", std::ios::in);
+                      while(data >> noAntrian &&
+                            std::getline(data, temp, ';'));
+                      data.close();
+                      
+                      data.open("Transaksi/noAntrianPrioritas.txt", std::ios::app);
+                      data << ++noAntrian << ";" << id <<";";
+                      data.close();
+                      
+                      data.open("Transaksi/" + id + "_status.txt", std::ios::out);
+                      data << "0";
+                      data.close();
+                      break;
+                    }
+                    case 'N':
+                    case 'n':{
+                      fort::char_table table2;
+                      table2 << fort::header << "    !!! Transaksi Berhasil !!!    " << fort::endr;
+                      table2 << "Mohon Tunggu di Acc" << fort::endr;
+                      table2 << fort::endr;
+                      table2.row(1).set_cell_text_align(fort::text_align::center);
+                      std::cout << table2.to_string() << std::endl;
+                      std::cout << std::endl;
+      
+                      data.open("Transaksi/noAntrian.txt", std::ios::in);
+                      while(data >> noAntrian &&
+                            std::getline(data, temp, ';'));
+                      data.close();
+                      
+                      data.open("Transaksi/noAntrian.txt", std::ios::app);
+                      data << ++noAntrian << ";" << id <<";";
+                      data.close();
+                      
+                      data.open("Transaksi/" + id + "_status.txt", std::ios::out);
+                      data << "0";
+                      data.close();
+                      break;
+                    }
+                  }
                 } 
                 
               } else {
@@ -1875,12 +1920,20 @@ int main() {
 
               // variabel yang dibutuhkan
               std::vector<bukuTemp> bacaBuku;
+              std::vector<bukuTemp> listEkstrak;
               std::fstream data;
               bukuTemp buffer;
               int pilih;
+              char pilih2;
               isMenuUser = true;
 
-              _165.ekstrakBuku(bacaBuku, data, buffer, pilih, id);
+              _165.ekstrakBuku(bacaBuku,
+                               listEkstrak,
+                               data,
+                               buffer,
+                               pilih,
+                               id,
+                               pilih2);
               
               // hold a second
               std::cout << "Input apa saja untuk melanjutkan... ";
@@ -1948,31 +2001,32 @@ int main() {
         } else {
           std::cout << "Masukkan password : ";
           std::cin >> password;
+          
+          //baca KTP
+          data.open("dataKTP/" + nik + ".txt", std::ios::in);
+          while(std::getline(data, temp, ',')){
+            bacaKTP.push_back(temp);
+          }
+          data.close();
+  
+          //tulis ke database akun
+          data.open("admin/dataSemuaAdmin.txt", std::ios::app);
+          for(int a = 0; a < bacaKTP.size(); a++){
+            data << bacaKTP.at(a)<<";";
+          }
+          data.close();
+          
+          // tulis password yang telah diregister
+          data.open("admin/" + nik + ".txt", std::ios::out | std::ios::trunc);
+          data << password;
+          data.close();
+  
+  
+          //pesan
+          std::cout << "Berhasil daftar sebagai Admin" << std::endl;
         }
         data.close();
 
-        //baca KTP
-        data.open("dataKTP/" + nik + ".txt", std::ios::in);
-        while(std::getline(data, temp, ',')){
-          bacaKTP.push_back(temp);
-        }
-        data.close();
-
-        //tulis ke database akun
-        data.open("admin/dataSemuaAdmin.txt", std::ios::app);
-        for(int a = 0; a < bacaKTP.size(); a++){
-          data << bacaKTP.at(a)<<";";
-        }
-        data.close();
-        
-        // tulis password yang telah diregister
-        data.open("admin/" + nik + ".txt", std::ios::out | std::ios::trunc);
-        data << password;
-        data.close();
-
-
-        //pesan
-        std::cout << "Berhasil daftar sebagai Admin" << std::endl;
         
         // hold a second
         std::cout << "Input apa saja untuk melanjutkan... ";
@@ -1983,9 +2037,11 @@ int main() {
       // Sebagai pengguna
       case '2': {
         // variabel yang dibutuhkan untuk daftar akun (pengguna)
+        std::vector<std::string> bacaKTP;
         std::fstream data;
         std::string nik;
         std::string password;
+        std::string temp;
 
         std::cout << "Masukkan NIK : ";
         std::cin >> nik;
@@ -1997,16 +2053,31 @@ int main() {
         } else {
           std::cout << "Masukkan password : ";
           std::cin >> password;
+
+          //baca KTP
+          data.open("dataKTP/" + nik + ".txt", std::ios::in);
+          while(std::getline(data, temp, ',')){
+            bacaKTP.push_back(temp);
+          }
+          data.close();
+  
+          //tulis ke database akun
+          data.open("user/dataSemuaUser.txt", std::ios::app);
+          for(int a = 0; a < bacaKTP.size(); a++){
+            data << bacaKTP.at(a)<<";";
+          }
+          data.close();
+          
+          // tulis password yang diregister
+          data.open("user/" + nik + ".txt", std::ios::out | std::ios::trunc);
+          data << password;
+          data.close();
+  
+          //pesan
+          std::cout << "Berhasil daftar sebagai User" << std::endl;
         }
         data.close();
 
-        // tulis password yang diregister
-        data.open("user/" + nik + ".txt", std::ios::out | std::ios::trunc);
-        data << password;
-        data.close();
-
-        //pesan
-        std::cout << "Berhasil daftar sebagai User" << std::endl;
         
         // hold a second
         std::cout << "Input apa saja untuk melanjutkan... ";

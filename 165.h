@@ -33,7 +33,7 @@ class Fajar{
       fort::char_table tableSearch2;
       tableSearch.set_border_style(FT_SOLID_ROUND_STYLE);
       tableSearch << fort::header << "Menu Cari Buku" << fort::endr;
-      tableSearch.row(0).set_cell_min_width(30);
+      tableSearch.row(0).set_cell_min_width(37);
       tableSearch.row(0).set_cell_text_align(fort::text_align::center);
       tableSearch.row(0).set_cell_bg_color(fort::color::light_red);
       tableSearch.row(0).set_cell_content_fg_color(fort::color::green);
@@ -85,7 +85,7 @@ class Fajar{
       fort::char_table table;
       table.set_border_style(FT_SOLID_ROUND_STYLE);
       table << fort::header << "Menu Filter Buku" << fort::endr;
-      table.row(0).set_cell_min_width(30);
+      table.row(0).set_cell_min_width(37);
       table.row(0).set_cell_text_align(fort::text_align::center);
       table.row(0).set_cell_bg_color(fort::color::red);
       table.row(0).set_cell_content_fg_color(fort::color::cyan);
@@ -167,11 +167,12 @@ class Fajar{
         }
       }
     }
-    void ekstrakBuku(std::vector<bukuTemp> &bacaBuku, 
+    void ekstrakBuku(std::vector<bukuTemp> &bacaBuku,
+                     std::vector<bukuTemp> &listEkstrak,
                      std::fstream &data, 
                      bukuTemp &buffer, 
                      int &pilih, 
-                     std::string &id){
+                     std::string &id, char &pilih2){
       // baca database buku
       data.open("Buku.txt", std::ios::in);
       while(std::getline(data, buffer.judul, ';') &&
@@ -186,31 +187,79 @@ class Fajar{
       table.set_border_style(FT_SOLID_ROUND_STYLE);
       table << fort::header << "Menu Ekstrak Informasi Buku";
       table << fort::endr;
-      table.row(0).set_cell_min_width(30);
+      table.row(0).set_cell_min_width(37);
       table.row(0).set_cell_text_align(fort::text_align::center);
       table.row(0).set_cell_bg_color(fort::color::green);
       table.row(0).set_cell_content_fg_color(fort::color::yellow);
       std::cout << table.to_string() << std::endl;
 
-      // pilih buku yang ingin di ekstrak
-      std::cout << "Pilih buku yang ingin di ekstrak : ";
-      std::cin >> pilih;
+      garis2(37);
+      std::cout << "|>>  1. Ekstrak Buku              <<|" << std::endl;
+      garis2(37);
+      std::cout << "|>>  2. Lihat Buku                <<|" << std::endl;
+      std::cout << "|>>     yang telah diekstrak      <<|" << std::endl;
+      garis2(37);
+      std::cout << "Pilih : ";
+      std::cin >> pilih2;
 
-      if(pilih - 1 < 0 || pilih - 1 >= bacaBuku.size()){
-        std::cout << "Di luar kendali" << std::endl;
-        return;
+      switch(pilih2){
+        case '1':
+          // pilih buku yang ingin di ekstrak
+          std::cout << "Pilih buku yang ingin di ekstrak : ";
+          std::cin >> pilih;
+    
+          if(pilih - 1 < 0 || pilih - 1 >= bacaBuku.size()){
+            std::cout << "Di luar kendali" << std::endl;
+            return;
+          }
+    
+          // tulis informasi ke txt
+          data.open("user/" + id + "_ekstrak.txt", std::ios::app);
+          data << bacaBuku.at(pilih - 1).judul << ";";
+          data << bacaBuku.at(pilih - 1).penulis << ";";
+          data << bacaBuku.at(pilih - 1).tahunTerbit << " ";
+          data << bacaBuku.at(pilih - 1).stok;
+          data.close();
+          
+          // pesan
+          std::cout << "!!! Berhasil di ekstrak !!!" << std::endl;
+          break;
+        case '2':
+          fort::char_table table;
+          
+          // baca buku hasil ekstrak
+          data.open("user/" + id + "_ekstrak.txt", std::ios::in);
+          while(std::getline(data, buffer.judul, ';') &&
+                std::getline(data, buffer.penulis, ';') &&
+                data >> buffer.tahunTerbit >> buffer.stok) {
+            listEkstrak.push_back(buffer);
+          }
+          data.close();
+
+          // cetak buku yang diesktrak
+          table << "List buku yang diekstrak" << fort::endr;
+          table << fort::separator;
+          table << "No";
+          table << "Judul";
+          table << "Penulis";
+          table << "Tahun Terbit";
+          table << "Stok" << fort::endr;
+          table << fort::separator;
+          for(int a = 0; a < listEkstrak.size(); a++){
+            table << a + 1;
+            table << listEkstrak.at(a).judul;
+            table << listEkstrak.at(a).penulis;
+            table << listEkstrak.at(a).tahunTerbit;
+            table << listEkstrak.at(a).stok << fort::endr;
+          }
+          table[0][0].set_cell_span(5);
+          table.row(0).set_cell_text_align(fort::text_align::center);
+          table.row(1).set_cell_text_align(fort::text_align::center);
+          table.set_border_style(FT_NICE_STYLE);
+          std::cout << table.to_string() << std::endl;
+          break;
       }
 
-      // tulis informasi ke txt
-      data.open("user/" + id + "_ekstrak.txt", std::ios::out);
-      data << bacaBuku.at(pilih - 1).judul << ";";
-      data << bacaBuku.at(pilih - 1).penulis << ";";
-      data << bacaBuku.at(pilih - 1).tahunTerbit << " ";
-      data << bacaBuku.at(pilih - 1).stok;
-      data.close();
-
-      // pesan
-      std::cout << "!!! Berhasil di ekstrak !!!" << std::endl;
     }
 };
 

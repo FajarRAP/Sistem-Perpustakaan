@@ -92,12 +92,14 @@ QueueCSLL<T> &QueueCSLL<T>::dequeue()
 template <typename T>
 T QueueCSLL<T>::getFront() 
 { 
-  return this->kepala->data; }
+  return this->kepala->data; 
+}
 
 template <typename T>
 T QueueCSLL<T>::getRear() 
 { 
-  return this->ekor->data; }
+  return this->ekor->data; 
+}
 
 template <typename T>
 bool QueueCSLL<T>::isEmpty() 
