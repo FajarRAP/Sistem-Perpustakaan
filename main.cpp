@@ -1,4 +1,5 @@
 #include "behaviour.hpp"
+#include "class/BinaryTree.hpp"
 #include "class/DoublyLinkedList.hpp"
 #include "class/SinglyLinkedList.hpp"
 #include "class/StackArrayDinamis.hpp"
@@ -143,7 +144,9 @@ int main() {
             garis2(37);
             std::cout << "|>>   9. Konfirmasi Transaksi     <<|" << std::endl;
             garis2(37);
-            std::cout << "|>>  10. Ke luar                  <<|" << std::endl;
+            std::cout << "|>>  10. About Developer          <<|" << std::endl;
+            garis2(37);
+            std::cout << "|>>  11. Ke luar                  <<|" << std::endl;
             garis(37);
             std::cout << "Pilih : ";
 
@@ -1168,7 +1171,7 @@ int main() {
                 break;
               }
   
-              //pilih lihat semua admin
+              // pilih lihat semua admin
               case 7: {
                 //bersihkan layar
                 system("clear");
@@ -1187,7 +1190,7 @@ int main() {
                 break;
               }
               
-              //pilih lihat semua user
+              // pilih lihat semua user
               case 8: {
                 //bersihkan tampilan
                 system("clear");
@@ -1206,7 +1209,7 @@ int main() {
                 break;
               }
 
-              //pilih konfirmasi transaksi
+              // pilih konfirmasi transaksi
               case 9: {
                 //bersihkan layar
                 system("clear");
@@ -1235,9 +1238,47 @@ int main() {
                 std::cin >> isPause;
                 break;
               }
-              
-              // Ke luar dari menu admin
+
+              // pilih tentang Admin Sistem Perpustakaan
               case 10: {
+                char pilih;
+                BinaryTree<std::string> pengembang, kiri, kanan, kosong;
+                kiri.makeTree("Dimas - UI/UX", kosong, kosong);
+                kanan.makeTree("Sena - DevOps", kosong, kosong);
+                pengembang.makeTree("Fajar (Team Leader)", kiri, kanan);
+
+                std::cout << "Ditampilkan secara" << std::endl;
+                std::cout << "1. Pre Order" << std::endl;
+                std::cout << "2. In Order" << std::endl;
+                std::cout << "3. Post Order" << std::endl;
+                std::cout << "Pilih : ";
+                std::cin >> pilih;
+
+                switch(pilih){
+                  case '1':{
+                    pengembang.preOrder();
+                    break;
+                  }
+                  case '2':{
+                    pengembang.inOrder();
+                    break;
+                  }
+                  case '3':{
+                    pengembang.postOrder();
+                    break;
+                  }
+                  default:{
+                    std::cout << "Pilihan tidak tersedia" << std::endl;
+                  }
+                }
+
+                // hold a second
+                std::cout << "Input apa saja untuk melanjutkan... ";
+                std::cin >> isPause;
+                break;
+              }
+              // Ke luar dari menu admin
+              case 11: {
                 isMenuAdmin = false;
                 break;
               }
